@@ -11,35 +11,37 @@ import { MenuItem } from 'primeng/api';
 
 })
 export class CalculatorComponent implements OnInit {
-
+  //Calculator başlangıç hesaplama verisi
   data: CalculatorTableInterface[] = [];
+  //Calculator kaydedilen hesaplamalar
   savedCalculations: CalculatorTableInterface[] = this.calcService.savedData;
+  //Reaktif Form
   calculatorForm!: FormGroup;
-
+  //Menu itemleri
   items: MenuItem[] | undefined;
 
   constructor(private fb: FormBuilder, private calcService: CalculatorService) {
 
   }
   ngOnInit(): void {
-
+    //Menü itemleri setter
     this.items = [
       { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: [''] },
       { label: 'Demo', icon: 'pi pi-fw pi-home', routerLink: ['/demo'] }
     ];
-    
 
+    //Yeni bir reaktif form oluşturur
     this.calculatorForm = new FormGroup({
       row0column1: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/)]),
       row0column2: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/)]),
       row1column1: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/)]),
       row1column2: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/)]),
     })
-
+    //Calculator başlangıç hesaplama verileri setter
     this.data = this.calcService.data;
 
   }
-
+  //Calculation Direktifi için handler
   calcHandler(event: any, index: number, column_status: string) {
     //Summing Logic
     if (column_status == "column1" && this.data[index].column2.value == '') {
@@ -80,13 +82,14 @@ export class CalculatorComponent implements OnInit {
     }
 
   }
+
+  //Formu Calculator servisi aracılığı ile kaydeder.
   saveForm() {
     if (this.calculatorForm.invalid)
       alert("Formu Doldurunuz");
-    //Formu kaydeder
+
     this.calcService.save(this.calculatorForm, this.data);
   }
-
 
   cardStyle = {
     'inline-size': '100%',
