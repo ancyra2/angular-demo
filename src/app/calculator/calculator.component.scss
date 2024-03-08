@@ -1,0 +1,41 @@
+.calculator-container{
+    min-block-size: 100vh;
+    
+    background-color: #eeeff3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .calculator-header{
+        inline-size: 72rem;
+        
+    }
+    .calculator-body{
+        block-size: 32rem;
+        inline-size: 72rem;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1rem;
+        form {
+            margin-block-start: 1rem;
+            inline-size: 100%;
+            .c-error{
+                display: block;
+                padding-inline-start: 0.5rem;
+            }
+        }
+    }   
+    .calculator-history{    
+        min-block-size: 8rem;
+        inline-size: 72rem;
+        background-color: #fff;
+        border-radius: 5px;
+        margin-block-start: 2rem;
+    }
+}
+// Component Styling
+:host ::ng-deep{
+    .p-dropdown.p-component{
+        inline-size: 100%;
+    }
+}

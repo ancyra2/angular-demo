@@ -1,0 +1,133 @@
+<main>
+    <!-- Sayfanın ana içeriğini sarmalayan ana etiket -->
+    <nav class="navbar">
+        <!-- Navigasyon çubuğunu içeren etiket -->
+        <div class="navbar-inner">
+            <!-- Navbar içeriğini sarmalayan etiket -->
+            <div class="card">
+                <!-- Kart içeriğini gösteren etiket -->
+                <p-tabMenu [model]="items"></p-tabMenu>
+                <!-- PrimeNG TabMenü bileşeni -->
+            </div>
+        </div>
+    </nav>
+    <section class="calculator-container">
+        <!-- Hesap makinesi bileşenlerini içeren bölüm -->
+        <div class="calculator-header">
+            <!-- Hesap makinesi başlığını gösteren kart -->
+            <p-card header="Basit Hesap Tablosu Uygulaması" [style]="cardStyle">
+                <!-- Başlık içeriği -->
+            </p-card>
+        </div>
+        <div class="calculator-body">
+            <!-- Hesap makinesi formunu içeren kart -->
+            <form [formGroup]="calculatorForm">
+                <!-- Form etiketi -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <!-- Kart içeriği -->
+                    <p-table [value]="data" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }">
+                        <!-- PrimeNG Tablo bileşeni -->
+                        <ng-template pTemplate="caption"> Hesap Tablosu </ng-template>
+                        <!-- Tablo başlığı -->
+                        <ng-template pTemplate="header">
+                            <!-- Tablo başlık satırı -->
+                            <tr>
+                                <!-- Başlık sütunları -->
+                                <th>A</th>
+                                <th>B</th>
+                                <th>Toplam</th>
+                                <th>Çarpım</th>
+                                <th>Bölüm</th>
+                                <th>Ortalama</th>
+                                <th>Varyans</th>
+                            </tr>
+                        </ng-template>
+                        <!-- Tablo gövdesi -->
+                        <ng-template pTemplate="body" let-rowData>
+                            <!-- Tablo veri satırları -->
+                            <tr>
+                                <!-- Veri sütunları -->
+                                <td>
+                                    <!-- Giriş alanı -->
+                                    <input type="text" pInputText appCalculator
+                                        (Calc)="calcHandler($event, rowData.index, rowData.column1.status)"
+                                        formControlName=row{{rowData.index}}column1 />
+                                    <!-- Hata mesajı -->
+                                    <small class="p-error block c-error"
+                                        *ngIf="calculatorForm.get('row' + rowData.index + 'column1')?.hasError('pattern')">Girdiğiniz
+                                        değer bir sayı olmalıdır</small>
+                                    <!-- Hata mesajı -->
+                                    <small class="p-error block c-error"
+                                        *ngIf="calculatorForm.get('row' + rowData.index + 'column1')?.hasError('required') && calculatorForm.get('row' + rowData.index + 'column1')?.touched">Boş
+                                        bırakılamaz</small>
+                                </td>
+                                <!-- Veri sütunu -->
+                                <td>
+                                    <!-- Giriş alanı -->
+                                    <input type="text" pInputText appCalculator
+                                        (Calc)="calcHandler($event, rowData.index, rowData.column2.status)"
+                                        formControlName=row{{rowData.index}}column2 />
+                                    <!-- Hata mesajı -->
+                                    <small class="p-error block c-error"
+                                        *ngIf="calculatorForm.get('row' + rowData.index + 'column2')?.hasError('pattern')">Girdiğiniz
+                                        değer bir sayı olmalıdır</small>
+                                    <!-- Hata mesajı -->
+                                    <small class="p-error block c-error"
+                                        *ngIf="calculatorForm.get('row' + rowData.index + 'column2')?.hasError('required') && calculatorForm.get('row' + rowData.index + 'column2')?.touched">Boş
+                                        bırakılamaz</small>
+                                </td>
+                                <!-- Diğer sütunlar -->
+                                <td>{{rowData.rowSum}}</td>
+                                <td>{{rowData.rowMultiply}}</td>
+                                <td>{{rowData.rowDivide}}</td>
+                                <td>{{rowData.rowMean}}</td>
+                                <td>{{rowData.rowVariance}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <!-- Kaydet butonu -->
+                <p-button (click)="saveForm()">Tabloyu Kaydet</p-button>
+            </form>
+        </div>
+        <!-- Kaydedilmiş hesaplamaların gösterildiği bölüm -->
+        <div class="calculator-history" *ngIf="savedCalculations.length > 0">
+            <!-- Kart içeriği -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <!-- PrimeNG Tablo bileşeni -->
+                <p-table [value]="savedCalculations" styleClass="p-datatable-gridlines"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+                    <!-- Tablo başlığı -->
+                    <ng-template pTemplate="caption"> Kaydedilmiş İşlemler </ng-template>
+                    <!-- Tablo başlık satırı -->
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <!-- Başlık sütunları -->
+                            <th>A</th>
+                            <th>B</th>
+                            <th>Toplam</th>
+                            <th>Çarpım</th>
+                            <th>Bölüm</th>
+                            <th>Ortalama</th>
+                            <th>Varyans</th>
+                        </tr>
+                    </ng-template>
+                    <!-- Tablo gövdesi -->
+                    <ng-template pTemplate="body" let-rowData>
+                        <!-- Veri satırları -->
+                        <tr>
+                            <!-- Veri sütunları -->
+                            <td>{{rowData.column1.value}}</td>
+                            <td>{{rowData.column2.value}}</td>
+                            <td>{{rowData.rowSum}}</td>
+                            <td>{{rowData.rowMultiply}}</td>
+                            <td>{{rowData.rowDivide}}</td>
+                            <td>{{rowData.rowMean}}</td>
+                            <td>{{rowData.rowVariance}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </section>
+</main>
