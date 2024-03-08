@@ -9,6 +9,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## Development server with Docker
 Run `docker build -t angulardemo .` After the Docker image is built, run the following command to start the container: `docker run -d -p 4200:4200 angulardemo` 
 
+## Clone
+To clone this repository, use the following command: `git clone https://github.com/ancyra2/angular-demo.git` 
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
